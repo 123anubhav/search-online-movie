@@ -1,0 +1,366 @@
+<!-- Created by 💞💢  Anubhav ❓💢 -->
+
+<!--created By Anubhav-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>💞Search movie💢</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    </head>
+    <body>
+     <form id="form">
+        <input type="text" id="search" class="search" placeholder="🔍  Search Movie">
+      </form><br>
+      
+  <div id="container">
+    <span id="text1"></span>
+    <span id="text2"></span>
+</div>
+
+<svg id="filters">
+    <defs>
+        <filter id="threshold">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0
+                      0 1 0 0 0
+                      0 0 1 0 0
+                      0 0 0 255 -140" />
+        </filter>
+    </defs>
+</svg>   
+
+    </header>
+<main id="main"></main>
+   
+    
+<script>
+    
+const API_URL = 'https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=3fd2be6f0c70a2a598f084ddfb75487c&page=1'
+const IMG_PATH = 'https://image.tmdb.org/t/p/w1280'
+const SEARCH_API = 'https://api.themoviedb.org/3/search/movie?api_key=3fd2be6f0c70a2a598f084ddfb75487c&query="'
+
+const main = document.getElementById('main')
+const form = document.getElementById('form')
+const search = document.getElementById('search')
+
+// Get initial movies
+getMovies(API_URL)
+
+async function getMovies(url) {
+    const res = await fetch(url)
+    const data = await res.json()
+
+    showMovies(data.results)
+}
+
+function showMovies(movies) {
+    main.innerHTML = ''
+
+    movies.forEach((movie) => {
+        const { title, poster_path, vote_average, overview } = movie
+
+        const movieEl = document.createElement('div')
+        movieEl.classList.add('movie')
+
+        movieEl.innerHTML = `
+            <img src="${IMG_PATH + poster_path}" alt="${title}">
+            <div class="movie-info">
+          <h3>${title}</h3>
+          <span class="${getClassByRate(vote_average)}">${vote_average}</span>
+            </div>
+            <div class="overview">
+          <h3>Overview</h3>
+          ${overview}
+        </div>
+        `
+        main.appendChild(movieEl)
+    })
+}
+
+function getClassByRate(vote) {
+    if(vote >= 8) {
+        return 'green'
+    } else if(vote >= 5) {
+        return 'orange'
+    } else {
+        return 'red'
+    }
+}
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault()
+
+    const searchTerm = search.value
+
+    if(searchTerm && searchTerm !== '') {
+        getMovies(SEARCH_API + searchTerm)
+
+        search.value = ''
+    } else {
+        window.location.reload()
+    }
+})
+
+
+
+var alert = swal({
+  
+  title: "Welcome to this Page",
+  text: "Created By Anubhav 💞💞",
+  icon: "success",
+  button: "Like 💝",
+})
+;
+
+</script>
+
+<script>
+    
+     const elts = {
+    text1: document.getElementById("text1"),
+    text2: document.getElementById("text2")
+};
+
+const texts = [
+    "Search 🔍",
+    "Any 🌟 ",
+    "Movie 💢",
+    "Created👌",
+    "By 💘💞",
+    "Anubhav ♥️",
+    "a Heavy 😊",
+    ":)coader😊",
+
+];
+
+const morphTime = 1;
+const cooldownTime = 0.25;
+
+let textIndex = texts.length - 1;
+let time = new Date();
+let morph = 0;
+let cooldown = cooldownTime;
+
+elts.text1.textContent = texts[textIndex % texts.length];
+elts.text2.textContent = texts[(textIndex + 1) % texts.length];
+
+function doMorph() {
+    morph -= cooldown;
+    cooldown = 0;
+
+    let fraction = morph / morphTime;
+
+    if (fraction > 1) {
+        cooldown = cooldownTime;
+        fraction = 1;
+    }
+
+    setMorph(fraction);
+}
+
+function setMorph(fraction) {
+    elts.text2.style.filter = `blur(${Math.min(8 / fraction - 8, 100)}px)`;
+    elts.text2.style.opacity = `${Math.pow(fraction, 0.4) * 100}%`;
+
+    fraction = 1 - fraction;
+    elts.text1.style.filter = `blur(${Math.min(8 / fraction - 8, 100)}px)`;
+    elts.text1.style.opacity = `${Math.pow(fraction, 0.4) * 100}%`;
+
+    elts.text1.textContent = texts[textIndex % texts.length];
+    elts.text2.textContent = texts[(textIndex + 1) % texts.length];
+}
+
+function doCooldown() {
+    morph = 0;
+
+    elts.text2.style.filter = "";
+    elts.text2.style.opacity = "100%";
+
+    elts.text1.style.filter = "";
+    elts.text1.style.opacity = "0%";
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+
+    let newTime = new Date();
+    let shouldIncrementIndex = cooldown > 0;
+    let dt = (newTime - time) / 1000;
+    time = newTime;
+
+    cooldown -= dt;
+
+    if (cooldown <= 0) {
+        if (shouldIncrementIndex) {
+            textIndex++;
+        }
+
+        doMorph();
+    } else {
+        doCooldown();
+    }
+}
+
+animate();
+
+</script>
+
+<style>
+/* Created by 💞💢  Anubhav❓💢 */
+
+/*created by Anubhav*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap');
+
+:root {
+  --primary-color: #22254b;
+  --secondary-color: #373b69;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--primary-color);
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+}
+
+header {
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  background-color: var(--secondary-color);
+}
+
+.search {
+  position:absolute ;
+  background-color: white;
+  border: 2px solid var(--primary-color);
+  border-radius: 50px;
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  left:18px;
+}
+
+.search::placeholder {
+  color: black;
+}
+
+.search:focus {
+  outline: none;
+  background-color: white;
+}
+
+main {
+  position:absolute ;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  top:10rem;
+}
+
+.movie {
+  width: 300px;
+  margin: 1rem;
+  background-color: var(--secondary-color);
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+  border-radius: 3px;
+}
+
+.movie img {
+  width: 100%;
+}
+
+.movie-info {
+  color: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap:0.2rem;
+  padding: 0.5rem 1rem 1rem;
+  letter-spacing: 0.5px;
+}
+
+.movie-info h3 {
+margin-top: 0;
+}
+
+.movie-info span {
+  background-color: var(--primary-color);
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  font-weight: bold;
+}
+
+.movie-info span.green {
+  color: lightgreen;
+}
+
+.movie-info span.orange {
+  color: orange;
+}
+
+.movie-info span.red {
+  color: red;
+}
+
+.overview {
+  background-color: #fff;
+  padding: 2rem;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  max-height: 100%;
+  transform: translateY(101%);
+  overflow-y: auto;
+  transition: transform 0.3s ease-in;
+}
+
+.movie:hover .overview {
+  transform: translateY(0);
+}
+
+#container {
+    position:relative ;
+    margin: auto;
+    width: 100vw;
+    height: 80pt;
+    bottom: 0;
+    filter: url(#threshold) blur(0.6px);
+}
+
+#text1,
+#text2 {
+    position: absolute;
+    width: 100%;
+    display: inline-block;
+    color:White;
+    font-family: "Raleway", sans-serif;
+    font-size: 50pt;
+    text-align: center;
+    user-select: none;
+    top:50px;
+}
+
+
+</style>
+
+<script>
+// Created by 💞💢  Anubhav❓💢 
+
+//created By Anubhav
+var a = document.createElement('a');
+a.href = "https://www.sololearn.com/Profile/21388423/?ref=app"; 
+var b = " " +"   "+"  "+"    "+
+"💝  Follow me in Sololearn ‼️ \n"+"\n"+
+"   "+"     "+ "  "+"   🌟🌟 Support Me 💯💝"
+alert(b+" \n  "+"  "+" \n"+"     "+"       "+"❌Created BY Anubhav"+"\n"+" \n"+"        "+"                  👇👇"+" \n"+" \n   "+a)
+
+</script>
+    
+    </body>
+</html>
